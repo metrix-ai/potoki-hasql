@@ -7,7 +7,7 @@ synopsis:
 description:
   This library provides a new simpler approach to the IO-streaming problem in Hasql.
 category:
-  Streaming, Data base
+  Streaming, Database
 homepage:
   https://github.com/metrix-ai/potoki-hasql 
 bug-reports:
@@ -49,14 +49,11 @@ library
     PotokiHasql.Error.Types
     PotokiHasql.Prelude
   build-depends:
-    foldl >= 1.3 && < 2,
-    hasql == 0.19.* || == 1.*,
-    hasql-pool == 0.4.*,
-    potoki >= 0.10 && < 0.12,
-    potoki-core >= 1.2 && < 1.6,
-    base == 4.*,
-    vector-builder >= 0.1 && < 0.4,
-    text == 1.*,
-    bytestring >= 0.10 && < 0.11,
-    vector >= 0.10 && < 0.13,
-    profunctors >= 5.1 && < 6
+    hasql == 1.1.1,
+    potoki == 0.11.1,
+    potoki-core == 1.5.2,
+    base == 4.10.1.0,
+    text == 1.2.3.0,
+    bytestring == 0.10.8.2,
+    vector == 0.12.0.1,
+    profunctors == 5.2.2

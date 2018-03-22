@@ -1,23 +1,22 @@
 module PotokiHasql.Potoki.Consume
 where
 
-import qualified Control.Foldl           as O
+import           PotokiHasql.Prelude   
 import qualified Hasql.Connection        as B
 import qualified Hasql.Query             as E
 import qualified Hasql.Session           as D
-import           Potoki.Consume
+import qualified Potoki.Consume          as O
 import           Potoki.Core.Consume
 import qualified Potoki.Core.Fetch       as C
 import qualified Potoki.Transform        as F
 import qualified PotokiHasql.Error.Hasql as G
-import           PotokiHasql.Error.Types (Error(..))
-import           PotokiHasql.Prelude     hiding (fold)
+import           PotokiHasql.Error.Types  
 
 
 executeBatchQuery :: E.Query (Vector params) () -> Int -> B.Settings -> Consume params (Either Error ())
 executeBatchQuery query batchSize settings =
   transform
-    (F.consume (transform (F.take batchSize) (fold O.vector)))
+    (F.consume (transform (F.take batchSize) O.vector))
     (executeQuery query settings)
 
 executeQuery :: E.Query params () -> B.Settings -> Consume params (Either Error ())
