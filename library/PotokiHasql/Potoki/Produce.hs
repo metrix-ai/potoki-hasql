@@ -1,5 +1,7 @@
-module PotokiHasql.Potoki.Produce
-where
+module PotokiHasql.Potoki.Produce (
+  vectorStatefulSession,
+  statefulSession
+) where
 
 import           PotokiHasql.Prelude
 import qualified Hasql.Connection        as F
