@@ -1,7 +1,7 @@
-module PotokiHasql.Potoki.Consume
+module Potoki.Hasql.Consume
 where
 
-import           PotokiHasql.Prelude   
+import           Potoki.Prelude   
 import qualified Hasql.Connection        as B
 import qualified Hasql.Query             as E
 import qualified Hasql.Session           as D
@@ -9,8 +9,8 @@ import qualified Potoki.Consume          as O
 import           Potoki.Core.Consume
 import qualified Potoki.Core.Fetch       as C
 import qualified Potoki.Transform        as F
-import qualified PotokiHasql.Error.Hasql as G
-import           PotokiHasql.Error.Types  
+import qualified Potoki.Error.Hasql as G
+import           Potoki.Error.Types  
 
 
 executeBatchQuery :: E.Query (Vector params) () -> Int -> B.Settings -> Consume params (Either Error ())

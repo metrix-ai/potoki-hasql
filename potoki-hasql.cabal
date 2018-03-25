@@ -1,7 +1,7 @@
 name:
   potoki-hasql
 version:
-  1
+  1.1
 synopsis:
   Integration of "potoki" and "hasql".
 description:
@@ -41,13 +41,13 @@ library
   default-language:
     Haskell2010
   exposed-modules:
-    PotokiHasql.Potoki.Consume
-    PotokiHasql.Potoki.Produce
+    Potoki.Hasql.Consume
+    Potoki.Hasql.Produce
   other-modules:
-    PotokiHasql.Error.Hasql
-    PotokiHasql.Error.Instances
-    PotokiHasql.Error.Types
-    PotokiHasql.Prelude
+    Potoki.Error.Hasql
+    Potoki.Error.Instances
+    Potoki.Error.Types
+    Potoki.Prelude
   build-depends:
     hasql == 1.1.1,
     potoki == 0.11.1,

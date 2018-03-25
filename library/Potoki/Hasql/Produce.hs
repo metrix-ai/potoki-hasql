@@ -1,17 +1,17 @@
-module PotokiHasql.Potoki.Produce (
+module Potoki.Hasql.Produce (
   vectorStatefulSession,
   statefulSession
 ) where
 
-import           PotokiHasql.Prelude
+import           Potoki.Prelude
 import qualified Hasql.Connection        as F
 import qualified Hasql.Session           as G
 import qualified Potoki.Core.Fetch       as A
 import           Potoki.Core.Produce
 import qualified Potoki.Produce          as K
 import qualified Potoki.Transform        as J
-import qualified PotokiHasql.Error.Hasql as I
-import           PotokiHasql.Error.Types
+import qualified Potoki.Error.Hasql as I
+import           Potoki.Error.Types
 
 
 vectorStatefulSession :: (state -> G.Session (Vector a, state)) -> state -> F.Settings -> Produce (Either Error a)
