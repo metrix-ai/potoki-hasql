@@ -4,24 +4,27 @@ module Potoki.Hasql.Produce (
 ) where
 
 import           Potoki.Hasql.Prelude
-import qualified Hasql.Connection         as F
-import qualified Hasql.Session            as G
-import qualified Potoki.Core.Fetch        as A
+import qualified Potoki.Hasql.Config.Types as B
+import qualified Data.Vector               as D
+import qualified Hasql.Connection          as F
+import qualified Hasql.Session             as G
+import qualified Potoki.Core.Fetch         as A
+import qualified Potoki.Hasql.Constants    as C
 import           Potoki.Core.Produce
-import qualified Potoki.Produce           as K
-import qualified Potoki.Transform         as J
-import qualified Potoki.Hasql.Error.Hasql as I
+import qualified Potoki.Produce            as K
+import qualified Potoki.Transform          as J
+import qualified Potoki.Hasql.Error.Hasql  as I
 import           Potoki.Hasql.Error.Types
+import           Control.Arrow             ((>>>))
 
 
-vectorStatefulSession :: (state -> G.Session (Vector a, state)) -> state -> F.Settings -> Produce (Either Error a)
-vectorStatefulSession vectorSession initialState connectionSettings =
+vectorStatefulSession :: (state -> G.Session (Vector a, state)) -> state -> B.ConnectionConfig -> Produce (Either Error a)
+vectorStatefulSession vectorSession initialState connectionConfig =
   K.transform
-    (right' J.vector)
-    (statefulSession vectorSession initialState connectionSettings)
+    (right' (J.takeWhile (not . D.null) >>> J.vector >>> J.bufferize C.buffering))
+    (statefulSession vectorSession initialState connectionConfig)
 
-
-statefulSession :: (state -> G.Session (a, state)) -> state -> F.Settings -> Produce (Either Error a)
+statefulSession :: (state -> G.Session (a, state)) -> state -> B.ConnectionConfig -> Produce (Either Error a)
 statefulSession session initialState =
   havingConnection $ \ connection -> do
     stateRef <- newIORef initialState
@@ -34,9 +37,8 @@ statefulSession session initialState =
           writeIORef stateRef newState
           return (just (Right result))
 
-
-havingConnection :: (F.Connection -> IO (A.Fetch (Either Error a))) -> F.Settings -> Produce (Either Error a)
-havingConnection cont connectionSettings =
+havingConnection :: (F.Connection -> IO (A.Fetch (Either Error a))) -> B.ConnectionConfig -> Produce (Either Error a)
+havingConnection cont (B.ConnectionConfig connectionSettings) =
   Produce $ do
     errorOrConnection <- F.acquire connectionSettings
     case errorOrConnection of
