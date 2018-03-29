@@ -1,7 +1,7 @@
 name:
   potoki-hasql
 version:
-  1.1.0.1
+  1.1.1.1
 synopsis:
   Integration of "potoki" and "hasql".
 description:
@@ -25,7 +25,7 @@ license-file:
 build-type:
   Simple
 cabal-version:
-  >=1.24
+  >= 1.24
 
 source-repository head
   type:
@@ -43,11 +43,11 @@ library
   exposed-modules:
     Potoki.Hasql.Consume
     Potoki.Hasql.Produce
+    Potoki.Hasql.Error.Hasql
+    Potoki.Hasql.Error.Instances
+    Potoki.Hasql.Error.Types
   other-modules:
-    Potoki.Error.Hasql
-    Potoki.Error.Instances
-    Potoki.Error.Types
-    Potoki.Prelude
+   Potoki.Hasql.Prelude
   build-depends:
     hasql >= 1.1.1 && < 1.2,
     potoki >= 0.11.1 && < 0.12,

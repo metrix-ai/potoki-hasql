@@ -1,9 +1,9 @@
 {-| Hasql errors interpretation -}
-module Potoki.Error.Hasql
+module Potoki.Hasql.Error.Hasql
 where
 
-import           Potoki.Prelude
-import           Potoki.Error.Types
+import           Potoki.Hasql.Prelude
+import           Potoki.Hasql.Error.Types
 import qualified Hasql.Session            as A
 import qualified Hasql.Connection         as C
 

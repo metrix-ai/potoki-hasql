@@ -1,16 +1,16 @@
 module Potoki.Hasql.Consume
 where
 
-import           Potoki.Prelude   
-import qualified Hasql.Connection        as B
-import qualified Hasql.Query             as E
-import qualified Hasql.Session           as D
-import qualified Potoki.Consume          as O
+import           Potoki.Hasql.Prelude   
+import qualified Hasql.Connection         as B
+import qualified Hasql.Query              as E
+import qualified Hasql.Session            as D
+import qualified Potoki.Consume           as O
 import           Potoki.Core.Consume
-import qualified Potoki.Core.Fetch       as C
-import qualified Potoki.Transform        as F
-import qualified Potoki.Error.Hasql as G
-import           Potoki.Error.Types  
+import qualified Potoki.Core.Fetch        as C
+import qualified Potoki.Transform         as F
+import qualified Potoki.Hasql.Error.Hasql as G
+import           Potoki.Hasql.Error.Types  
 
 
 executeBatchQuery :: E.Query (Vector params) () -> Int -> B.Settings -> Consume params (Either Error ())

@@ -1,4 +1,4 @@
-module Potoki.Prelude
+module Potoki.Hasql.Prelude
 (
   module Exports,
   stringText,

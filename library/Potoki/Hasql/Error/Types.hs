@@ -1,7 +1,7 @@
-module Potoki.Error.Types
+module Potoki.Hasql.Error.Types
 where
 
-import Potoki.Prelude
+import Potoki.Hasql.Prelude
 
 
 {-| Error, which can be produced during interaction with the Requests database.
