@@ -8,7 +8,6 @@ import qualified Data.Vector               as D
 import qualified Hasql.Connection          as F
 import qualified Hasql.Session             as G
 import qualified Potoki.Core.Fetch         as A
-import qualified Potoki.Hasql.Constants    as C
 import           Potoki.Core.Produce
 import qualified Potoki.Produce            as K
 import qualified Potoki.Transform          as J
@@ -16,10 +15,10 @@ import qualified Potoki.Hasql.Error.Hasql  as I
 import           Potoki.Hasql.Error.Types
 
 
-vectorStatefulSession :: (state -> G.Session (Vector a, state)) -> state -> F.Settings -> Produce (Either Error a)
-vectorStatefulSession vectorSession initialState connectionConfig =
+vectorStatefulSession :: (state -> G.Session (Vector a, state)) -> state -> F.Settings -> Int -> Produce (Either Error a)
+vectorStatefulSession vectorSession initialState connectionConfig buffering =
   K.transform
-    (right' (J.takeWhile (not . D.null) >>> J.vector >>> J.bufferize C.buffering))
+    (right' (J.takeWhile (not . D.null) >>> J.vector >>> J.bufferize buffering))
     (statefulSession vectorSession initialState connectionConfig)
 
 statefulSession :: (state -> G.Session (a, state)) -> state -> F.Settings -> Produce (Either Error a)

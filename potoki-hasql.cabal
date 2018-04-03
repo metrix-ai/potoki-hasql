@@ -46,7 +46,6 @@ library
     Potoki.Hasql.Error
   other-modules:
     Potoki.Hasql.Prelude
-    Potoki.Hasql.Constants
     Potoki.Hasql.Error.Hasql
     Potoki.Hasql.Error.Instances
     Potoki.Hasql.Error.Types
