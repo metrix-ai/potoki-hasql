@@ -45,11 +45,12 @@ library
     Potoki.Hasql.Produce
     Potoki.Hasql.Constants
     Potoki.Hasql.Config.Types
+    Potoki.Hasql.Error
+  other-modules:
+    Potoki.Hasql.Prelude
     Potoki.Hasql.Error.Hasql
     Potoki.Hasql.Error.Instances
     Potoki.Hasql.Error.Types
-  other-modules:
-   Potoki.Hasql.Prelude
   build-depends:
     hasql >= 1.1.1 && < 1.2,
     hasql-pool >= 0.4.3 && < 0.5,
