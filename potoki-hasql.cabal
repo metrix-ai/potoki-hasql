@@ -43,17 +43,15 @@ library
   exposed-modules:
     Potoki.Hasql.Consume
     Potoki.Hasql.Produce
-    Potoki.Hasql.Constants
-    Potoki.Hasql.Config.Types
     Potoki.Hasql.Error
   other-modules:
     Potoki.Hasql.Prelude
+    Potoki.Hasql.Constants
     Potoki.Hasql.Error.Hasql
     Potoki.Hasql.Error.Instances
     Potoki.Hasql.Error.Types
   build-depends:
     hasql >= 1.1.1 && < 1.2,
-    hasql-pool >= 0.4.3 && < 0.5,
     potoki >= 0.11.1 && < 0.12,
     potoki-core >= 1.5.2 && < 1.6,
     base >= 4.10.1.0 && < 5,
