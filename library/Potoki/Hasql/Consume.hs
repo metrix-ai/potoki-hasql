@@ -13,8 +13,8 @@ import qualified Potoki.Hasql.Error.Hasql as G
 import           Potoki.Hasql.Error.Types  
 
 
-executeConcurrentlyQuery :: E.Query (Vector params) () -> Int -> Int -> B.Settings -> Consume params (Either Error ())
-executeConcurrentlyQuery query batchSize amountOfConnections settings =
+executeBatchQueryConcurrently :: E.Query (Vector params) () -> Int -> Int -> B.Settings -> Consume params (Either Error ())
+executeBatchQueryConcurrently query batchSize amountOfConnections settings =
   transform batchTransform (right' O.concat)
   where
     batchTransform =
