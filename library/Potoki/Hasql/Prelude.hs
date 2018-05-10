@@ -10,9 +10,10 @@ import           Prelude                  as Exports
 import           Control.Monad            as Exports (join)
 import           Data.Profunctor          as Exports (right')
 import           Data.IORef               as Exports
-import           Data.Vector              as Exports (Vector(..))
-import           Data.Text                as Exports (Text(..))
+import           Data.Vector              as Exports (Vector)
+import           Data.Text                as Exports (Text)
 import           Control.Arrow            as Exports ((>>>))
+import           Data.Bifunctor           as Exports (bimap)
 import qualified Data.Text                as A
 import qualified Data.Text.Encoding       as A
 import qualified Data.Text.Encoding.Error as A

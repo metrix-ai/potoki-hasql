@@ -43,6 +43,7 @@ library
   exposed-modules:
     Potoki.Hasql.Consume
     Potoki.Hasql.Produce
+    Potoki.Hasql.Fetch
     Potoki.Hasql.Error
   other-modules:
     Potoki.Hasql.Prelude
