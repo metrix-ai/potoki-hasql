@@ -11,8 +11,8 @@ import qualified Hasql.Connection as C
 import qualified Hasql.Session as S
 
 
-transformFetch :: C.Connection -> Query a b -> (b -> c) -> Fetch a -> Fetch (Either Error c)
-transformFetch connection query convert myFetch =
+transformFetch :: Query a b -> (b -> c) -> C.Connection -> Fetch a -> Fetch (Either Error (a, c))
+transformFetch query convert connection myFetch =
   let ioMaybeUri = I.fetch myFetch
    in O.ioMaybe $ do
      maybeUri <- ioMaybeUri
@@ -20,5 +20,5 @@ transformFetch connection query convert myFetch =
        Nothing  -> return $ Nothing
        Just arg -> do
          eitherErrRes <- S.run (S.query arg query) connection
-         return . Just $ bimap E.sessionError convert eitherErrRes
+         return . Just $ bimap E.sessionError ((arg,) . convert) eitherErrRes
 
