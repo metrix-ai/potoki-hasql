@@ -1,7 +1,7 @@
 name:
   potoki-hasql
 version:
-  1.3
+  1.4
 synopsis:
   Integration of "potoki" and "hasql".
 description:
