@@ -19,3 +19,11 @@ sessionError =
       ConnectionError (maybe "" lenientUtf8ByteStringText details)
     A.ResultError details ->
       InteractionError ((stringText . show) details)
+
+sessionErrorWithParams :: Show params => params -> A.Error -> Error
+sessionErrorWithParams params =
+  \ case
+    A.ClientError details ->
+      ConnectionError (maybe "" lenientUtf8ByteStringText details)
+    A.ResultError details ->
+      InteractionError ((fromString . shows details . showString ": " . shows params) "")

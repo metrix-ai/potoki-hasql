@@ -13,24 +13,24 @@ import qualified Potoki.Hasql.Error.Hasql as G
 import           Potoki.Hasql.Error.Types  
 
 
-executeBatchQueryConcurrently :: E.Query (Vector params) () -> Int -> Int -> B.Settings -> Consume params (Either Error ())
+executeBatchQueryConcurrently :: Show params => E.Query (Vector params) () -> Int -> Int -> B.Settings -> Consume params (Either Error ())
 executeBatchQueryConcurrently query batchSize amountOfConnections settings =
   transform batchTransform (right' O.concat)
   where
     batchTransform =
       F.concurrently amountOfConnections (F.consume (executeBatchQuery query batchSize settings))
 
-executeBatchQuery :: E.Query (Vector params) () -> Int -> B.Settings -> Consume params (Either Error ())
+executeBatchQuery :: Show params => E.Query (Vector params) () -> Int -> B.Settings -> Consume params (Either Error ())
 executeBatchQuery query batchSize settings =
   transform
     (F.consume (transform (F.take batchSize) O.vector))
     (executeQuery query settings)
 
-executeQuery :: E.Query params () -> B.Settings -> Consume params (Either Error ())
+executeQuery :: Show params => E.Query params () -> B.Settings -> Consume params (Either Error ())
 executeQuery query =
   executeSession (\ params -> D.query params query)
 
-executeSession :: (params -> D.Session ()) -> B.Settings -> Consume params (Either Error ())
+executeSession :: Show params => (params -> D.Session ()) -> B.Settings -> Consume params (Either Error ())
 executeSession session connectionSettings =
   Consume $ \ (C.Fetch fetchIO) -> do
     acquisitionResult <- B.acquire connectionSettings
@@ -47,5 +47,5 @@ executeSession session connectionSettings =
                   result <- D.run (session params) connection
                   case result of
                     Right () -> loop
-                    Left error -> return (Left (G.sessionError error)))
+                    Left error -> return (Left (G.sessionErrorWithParams params error)))
           in loop <* B.release connection
