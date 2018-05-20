@@ -8,6 +8,9 @@ where
 
 import           Prelude                  as Exports
 import           Control.Monad            as Exports (join)
+import           Data.Monoid              as Exports hiding (Last(..), First(..), (<>))
+import           Data.Semigroup           as Exports
+import           Data.String              as Exports
 import           Data.Profunctor          as Exports (right')
 import           Data.IORef               as Exports
 import           Data.Vector              as Exports (Vector(..))
