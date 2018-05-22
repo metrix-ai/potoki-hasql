@@ -9,6 +9,7 @@ import qualified Hasql.Connection          as F
 import qualified Hasql.Session             as G
 import qualified Potoki.Core.Fetch         as A
 import           Potoki.Core.Produce
+import qualified Acquire.Acquire           as M
 import qualified Potoki.Produce            as K
 import qualified Potoki.Transform          as J
 import qualified Potoki.Hasql.Error.Hasql  as I
@@ -36,7 +37,7 @@ statefulSession session initialState =
 
 havingConnection :: (F.Connection -> IO (A.Fetch (Either Error a))) -> F.Settings -> Produce (Either Error a)
 havingConnection cont connectionSettings =
-  Produce $ do
+  Produce $ M.Acquire $ do
     errorOrConnection <- F.acquire connectionSettings
     case errorOrConnection of
       Left error ->

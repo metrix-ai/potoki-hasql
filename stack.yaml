@@ -1,1 +1,5 @@
-resolver: https://raw.githubusercontent.com/metrix-ai/stack-snapshot/9.3/snapshot.yaml
+resolver: https://raw.githubusercontent.com/metrix-ai/stack-snapshot/16.3/snapshot.yaml
+extra-deps:
+- potoki-core-0.10
+- {git: "https://github.com/metrix-ai/potoki", commit: "0.12"}
+- acquire-0.2.0.1
