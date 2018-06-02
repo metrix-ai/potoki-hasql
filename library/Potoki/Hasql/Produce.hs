@@ -9,8 +9,7 @@ import qualified Hasql.Connection          as F
 import qualified Hasql.Session             as G
 import qualified Potoki.Core.Fetch         as A
 import           Potoki.Core.Produce
-import qualified Potoki.Produce            as K
-import qualified Potoki.Transform          as J
+import qualified Potoki.Core.Transform     as J
 import qualified Potoki.Hasql.Error.Hasql  as I
 import           Potoki.Hasql.Error.Types
 import qualified Acquire.Acquire           as B
@@ -18,7 +17,7 @@ import qualified Acquire.Acquire           as B
 
 vectorStatefulSession :: (state -> G.Session (Vector a, state)) -> state -> F.Settings -> Int -> Produce (Either Error a)
 vectorStatefulSession vectorSession initialState connectionConfig buffering =
-  K.transform
+  transform
     (right' (J.takeWhile (not . D.null) >>> J.vector >>> J.bufferize buffering))
     (statefulSession vectorSession initialState connectionConfig)
 
