@@ -35,17 +35,16 @@ executeSession session connectionSettings =
   Consume $ \ (C.Fetch fetchIO) -> do
     acquisitionResult <- B.acquire connectionSettings
     case acquisitionResult of
-      Left error -> return (Left (G.connectionError error))
+      Left err -> return (Left (G.connectionError err))
       Right connection ->
         let
-          loop =
-            join $
-            fetchIO
-              (return (Right ()))
-              (\ params ->
-                do
-                  result <- D.run (session params) connection
-                  case result of
-                    Right () -> loop
-                    Left error -> return (Left (G.sessionError error)))
-          in loop <* B.release connection
+          doLoop = do
+            fetch <- fetchIO
+            case fetch of
+              Nothing     -> return (Right ())
+              Just params -> do
+                result <- D.run (session params) connection
+                case result of
+                  Right () -> doLoop
+                  Left err -> return (Left (G.sessionError err))
+          in doLoop <* B.release connection

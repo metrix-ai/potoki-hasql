@@ -13,8 +13,8 @@ import           Data.Semigroup           as Exports
 import           Data.String              as Exports
 import           Data.Profunctor          as Exports (right')
 import           Data.IORef               as Exports
-import           Data.Vector              as Exports (Vector(..))
-import           Data.Text                as Exports (Text(..))
+import           Data.Vector              as Exports (Vector)
+import           Data.Text                as Exports (Text)
 import           Control.Arrow            as Exports ((>>>))
 import qualified Data.Text                as A
 import qualified Data.Text.Encoding       as A

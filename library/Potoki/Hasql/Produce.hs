@@ -13,6 +13,7 @@ import qualified Potoki.Produce            as K
 import qualified Potoki.Transform          as J
 import qualified Potoki.Hasql.Error.Hasql  as I
 import           Potoki.Hasql.Error.Types
+import qualified Acquire.Acquire           as B
 
 
 vectorStatefulSession :: (state -> G.Session (Vector a, state)) -> state -> F.Settings -> Int -> Produce (Either Error a)
@@ -25,29 +26,28 @@ statefulSession :: (state -> G.Session (a, state)) -> state -> F.Settings -> Pro
 statefulSession session initialState =
   havingConnection $ \ connection -> do
     stateRef <- newIORef initialState
-    return $ A.Fetch $ \ nil just -> do
+    return $ A.Fetch $ do
       state <- readIORef stateRef
       sessionResult <- G.run (session state) connection
       case sessionResult of
-        Left error -> return (just (Left (I.sessionError error)))
+        Left err -> return (Just (Left (I.sessionError err)))
         Right (result, newState) -> do
           writeIORef stateRef newState
-          return (just (Right result))
+          return (Just (Right result))
 
 havingConnection :: (F.Connection -> IO (A.Fetch (Either Error a))) -> F.Settings -> Produce (Either Error a)
 havingConnection cont connectionSettings =
-  Produce $ do
+  Produce $ B.Acquire $ do
     errorOrConnection <- F.acquire connectionSettings
     case errorOrConnection of
-      Left error ->
+      Left err ->
         let
           fetch =
-            A.Fetch $ \ stop yield -> return (yield (Left (I.connectionError error)))
+            A.Fetch $ return (Just (Left (I.connectionError err)))
           kill =
             return ()
           in return (fetch, kill)
       Right connection -> do
         fetch <- cont connection
-        let
-          kill = F.release connection
-          in return (fetch, kill)
+        let kill = F.release connection
+        return (fetch, kill)
