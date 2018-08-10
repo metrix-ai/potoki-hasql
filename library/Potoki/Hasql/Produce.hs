@@ -55,7 +55,7 @@ havingConnection connectionSettings cont = do
         (fetch, kill) <- cont connection
         return (fetch, kill >> F.release connection)
 
-cursorStatement :: S.Statement params (Vector result) -> params -> Int -> F.Settings -> Produce (Either Error (Vector result))
+cursorStatement :: Foldable t => S.Statement params (t result) -> params -> Int -> F.Settings -> Produce (Either Error (t result))
 cursorStatement (S.Statement sql encoder decoder _) params batchSize settings = 
   Produce $ B.Acquire $ do
     havingConnection settings $ \connection -> do

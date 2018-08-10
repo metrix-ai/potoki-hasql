@@ -38,15 +38,14 @@ begin = unitStatementIO "BEGIN"
 commit :: F.Connection -> IO ()
 commit = unitStatementIO "COMMIT"
 
-fetchFromCursor :: forall result a. C.Result (Vector result)
+fetchFromCursor :: Foldable t => C.Result (t result)
   -> F.Connection 
   -> BS.ByteString 
   -> Int 
-  -> (Vector result -> IO (Maybe (Either Error a)))
+  -> ((t result) -> IO (Maybe (Either Error a)))
   -> IO (Maybe (Either Error a))
 fetchFromCursor decoder connection cursorName batchSize onSuccess = do 
-  let fetchFromCursorStatement :: S.Statement () (Vector result)
-      fetchFromCursorStatement = S.Statement sql' E.unit decoder True
+  let fetchFromCursorStatement = S.Statement sql' E.unit decoder True
       sql' =
         TB.toByteString
           $  "FETCH FORWARD "
