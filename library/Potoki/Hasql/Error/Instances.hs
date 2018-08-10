@@ -6,3 +6,4 @@ import Potoki.Hasql.Error.Types
 
 
 deriving instance Show Error
+deriving instance Eq Error
